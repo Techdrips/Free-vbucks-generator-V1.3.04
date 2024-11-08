@@ -36,6 +36,16 @@
             color: #d9534f;
             margin-top: 10px;
         }
+        .code-box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #d9534f;
+            display: inline-block;
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -50,8 +60,25 @@
     <h2 class="elementor-heading-title elementor-size-default">Verified 3 Hour(s) ago</h2>
     <h2 class="elementor-heading-title elementor-size-default">76 Codes Remaining</h2>
     <p class="highlight">Grab your free V-Bucks code while supplies last!</p>
+    <div class="code-box" id="codeBox">Click to generate a code</div>
 </div>
+
+<script>
+    // Function to generate a 16-character alphanumeric code with capital letters and numbers
+    function generateCode() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+        for (let i = 0; i < 16; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    }
+
+    // Display code on click
+    document.getElementById('codeBox').addEventListener('click', function() {
+        this.textContent = generateCode();
+    });
+</script>
 
 </body>
 </html>
-
