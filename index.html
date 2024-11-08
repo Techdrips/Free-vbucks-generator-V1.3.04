@@ -58,13 +58,28 @@
 <div class="content">
     <h2 class="elementor-heading-title elementor-size-default">Fortnite 13500 V-Bucks Gift Card FREE!!!</h2>
     <h2 class="elementor-heading-title elementor-size-default">Verified 3 Hour(s) ago</h2>
-    <h2 class="elementor-heading-title elementor-size-default">76 Codes Remaining</h2>
+    <h2 class="elementor-heading-title elementor-size-default" id="codesLeft">2048 Codes Remaining</h2>
     <p class="highlight">Grab your free V-Bucks code while supplies last!</p>
     <div class="code-box" id="codeBox">Click to generate a code</div>
 </div>
 
 <script>
-    // Function to generate a 16-character alphanumeric code with capital letters and numbers
+    const CODE_RESET_COUNT = 2048;
+    const RESET_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Initialize or reset the codes count if it's been more than 24 hours
+    function initializeCodesLeft() {
+        const lastResetTime = localStorage.getItem('lastResetTime');
+        const now = Date.now();
+
+        if (!lastResetTime || now - lastResetTime >= RESET_INTERVAL) {
+            localStorage.setItem('codesLeft', CODE_RESET_COUNT);
+            localStorage.setItem('lastResetTime', now);
+        }
+        document.getElementById('codesLeft').textContent = `${localStorage.getItem('codesLeft')} Codes Remaining`;
+    }
+
+    // Generate a 16-character alphanumeric code with capital letters and numbers
     function generateCode() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let code = '';
@@ -74,10 +89,25 @@
         return code;
     }
 
-    // Display code on click
-    document.getElementById('codeBox').addEventListener('click', function() {
-        this.textContent = generateCode();
-    });
+    // Update the code display and decrement codes left
+    function handleCodeGeneration() {
+        let codesLeft = parseInt(localStorage.getItem('codesLeft'), 10);
+
+        if (codesLeft > 0) {
+            document.getElementById('codeBox').textContent = generateCode();
+            codesLeft--;
+            localStorage.setItem('codesLeft', codesLeft);
+            document.getElementById('codesLeft').textContent = `${codesLeft} Codes Remaining`;
+        } else {
+            document.getElementById('codeBox').textContent = 'No codes left';
+        }
+    }
+
+    // Initialize the code count display on page load
+    initializeCodesLeft();
+
+    // Event listener for generating a new code on click
+    document.getElementById('codeBox').addEventListener('click', handleCodeGeneration);
 </script>
 
 </body>
